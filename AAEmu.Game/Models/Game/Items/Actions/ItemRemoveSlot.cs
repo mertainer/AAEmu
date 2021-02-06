@@ -30,7 +30,7 @@ namespace AAEmu.Game.Models.Game.Items.Actions
         {
             base.Write(stream);
             stream.Write((byte)_slotType);
-            stream.Write(_slot);
+            stream.Write(_slot); // index
             stream.Write(_itemId);
             return stream;
         }

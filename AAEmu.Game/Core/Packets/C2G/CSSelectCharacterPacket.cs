@@ -7,13 +7,12 @@ using AAEmu.Game.Core.Managers.World;
 using AAEmu.Game.Core.Network.Game;
 using AAEmu.Game.Core.Packets.G2C;
 using AAEmu.Game.Models.Game.Units.Route;
-using AAEmu.Game.Models.Game.World.Zones;
 
 namespace AAEmu.Game.Core.Packets.C2G
 {
     public class CSSelectCharacterPacket : GamePacket
     {
-        public CSSelectCharacterPacket() : base(CSOffsets.CSSelectCharacterPacket, 1)
+        public CSSelectCharacterPacket() : base(CSOffsets.CSSelectCharacterPacket, 5)
         {
         }
 
@@ -31,7 +30,7 @@ namespace AAEmu.Game.Core.Packets.C2G
                 var houses = Connection.Houses.Values.Where(x => x.OwnerId == character.Id);
 
                 Connection.ActiveChar = character;
-                if (Models.Game.Char.Character._usedCharacterObjIds.TryGetValue(character.Id, out uint oldObjId))
+                if (Models.Game.Char.Character._usedCharacterObjIds.TryGetValue(character.Id, out var oldObjId))
                 {
                     Connection.ActiveChar.ObjId = oldObjId;
                 }
@@ -40,8 +39,6 @@ namespace AAEmu.Game.Core.Packets.C2G
                     Connection.ActiveChar.ObjId = ObjectIdManager.Instance.GetNextId();
                     Models.Game.Char.Character._usedCharacterObjIds.TryAdd(character.Id, character.ObjId);
                 }
-
-                Connection.ActiveChar.Simulation = new Simulation(character);
 
                 Connection.ActiveChar.Simulation = new Simulation(character);
 
@@ -62,7 +59,7 @@ namespace AAEmu.Game.Core.Packets.C2G
 
                 foreach (var house in houses)
                 {
-                    Connection.SendPacket(new SCMyHousePacket(house));
+                    Connection.SendPacket(new SCMyHouseStatePacket(house));
                 }
 
                 foreach (var conflict in ZoneManager.Instance.GetConflicts())

@@ -227,6 +227,7 @@ namespace AAEmu.Game.Core.Managers.UnitManagers
                             func.AttachPointId = reader.GetByte("attach_point_id");
                             func.Space = reader.GetInt32("space");
                             func.BondKindId = reader.GetByte("bond_kind_id");
+                            func.AnimActionId = reader.GetUInt32("anim_action_id"); // added in 1.7
                             _funcTemplates["DoodadFuncAttachment"].Add(func.Id, func);
                         }
                     }
@@ -2050,9 +2051,9 @@ namespace AAEmu.Game.Core.Managers.UnitManagers
                             var func = new DoodadFuncStampMaker();
                             func.Id = reader.GetUInt32("id");
                             func.ConsumeMoney = reader.GetInt32("consume_money");
-                            func.ItemId = reader.GetUInt32("item_id");
-                            func.ConsumeItemId = reader.GetUInt32("consume_item_id");
-                            func.ConsumeCount = reader.GetInt32("consume_count");
+                            func.ItemId = reader.GetUInt32("item_id", 0);
+                            func.ConsumeItemId = reader.GetUInt32("consume_item_id", 0);
+                            func.ConsumeCount = reader.GetInt32("consume_count", 0);
                             _funcTemplates["DoodadFuncStampMaker"].Add(func.Id, func);
                         }
                     }
